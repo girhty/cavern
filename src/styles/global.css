@@ -45,7 +45,7 @@
   }
 
   .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 rounded-full border border-current/25 px-6 py-3 font-mono text-[11px] uppercase tracking-[0.2em]
+    @apply inline-flex items-center justify-center gap-2 rounded-full border px-6 py-3 font-mono text-[11px] uppercase tracking-[0.2em]
       transition-all duration-300 hover:border-amber hover:text-amber active:scale-[0.97];
   }
 
@@ -54,7 +54,7 @@
   }
 
   .rule {
-    @apply h-px w-full bg-gradient-to-r from-transparent via-current/20 to-transparent;
+    @apply h-px w-full bg-gradient-to-r from-transparent  to-transparent;
   }
 }
 
