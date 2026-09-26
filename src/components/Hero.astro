@@ -1,0 +1,433 @@
+---
+import { business, hours } from '../data/content';
+
+const stars = Array.from({ length: 5 }, (_, i) => i < Math.round(business.rating));
+---
+
+<section
+  id="top"
+  data-surface="dark"
+  class="relative isolate min-h-[100svh] overflow-hidden bg-ink"
+>
+  <canvas
+    id="hero-canvas"
+    class="absolute inset-0 z-0 h-full w-full"
+    aria-hidden="true"></canvas>
+
+  <div
+    class="pointer-events-none absolute inset-0 z-10 bg-[radial-gradient(120%_90%_at_50%_-10%,transparent_35%,rgba(7,7,7,0.55)_75%,#070707_100%)]"
+  >
+  </div>
+  <div
+    class="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-40 bg-gradient-to-b from-transparent to-ink"
+  >
+  </div>
+
+  <div
+    class="relative z-20 mx-auto flex min-h-[100svh] max-w-edge flex-col justify-center px-5 pb-24 pt-32 md:pb-28"
+  >
+    <p class="eyebrow" data-reveal>
+      Est. Erbil · 36.1911° N, 44.0091° E · West Diamond
+    </p>
+
+    <h1
+      class="mt-6 font-display text-[clamp(3.6rem,15vw,12rem)] font-extrabold leading-[0.82] tracking-[-0.04em] text-bone"
+      data-reveal
+      style="--d:80ms"
+    >
+      Cavern
+    </h1>
+
+    <div class="mt-2 flex flex-wrap items-baseline gap-x-6 gap-y-2" data-reveal style="--d:160ms">
+      <p class="font-script text-[clamp(1.8rem,6vw,3.6rem)] italic leading-none text-amber">
+        کاڤێرن
+      </p>
+      <p
+        class="font-mono text-[10px] uppercase tracking-[0.34em] text-sand/70 sm:text-[11px]"
+      >
+        The coziest place in town
+      </p>
+    </div>
+
+    <p
+      class="mt-8 max-w-xl text-balance text-[15px] leading-relaxed text-bone/70 sm:text-lg"
+      data-reveal
+      style="--d:240ms"
+    >
+      Rooted in stone, warmed by fire. A shared table on 100M Street where breakfast runs into
+      candlelight, and strangers leave as friends.
+    </p>
+
+    <div class="mt-10 flex flex-wrap items-center gap-4" data-reveal style="--d:320ms">
+      <a href="#visit" class="btn-primary">
+        Reserve a table
+        <span aria-hidden="true">→</span>
+      </a>
+      <a href="#gallery" class="btn-ghost text-bone"> Explore the gallery </a>
+    </div>
+
+    <div
+      class="mt-12 flex flex-wrap items-center gap-x-8 gap-y-4 border-t border-white/10 pt-6"
+      data-reveal
+      style="--d:400ms"
+    >
+      <!-- Google rating badge -->
+      <a
+        href="#reviews"
+        class="group flex items-center gap-3"
+        aria-label={`Rated ${business.rating} out of 5 from ${business.reviewCount} Google reviews`}
+      >
+        <span
+          class="grid h-11 w-11 place-items-center rounded-full border border-white/12 bg-white/[0.04] backdrop-blur-md transition-colors group-hover:border-amber/60"
+        >
+          <svg viewBox="0 0 24 24" class="h-5 w-5" aria-hidden="true">
+            <path
+              fill="#4285F4"
+              d="M23.49 12.27c0-.79-.07-1.54-.2-2.27H12v4.51h6.47a5.54 5.54 0 0 1-2.4 3.64v3h3.87c2.26-2.09 3.55-5.17 3.55-8.88z"
+            ></path>
+            <path
+              fill="#34A853"
+              d="M12 24c3.24 0 5.96-1.08 7.94-2.91l-3.87-3c-1.08.72-2.46 1.15-4.07 1.15-3.13 0-5.78-2.11-6.73-4.95H1.28v3.1A11.99 11.99 0 0 0 12 24z"
+            ></path>
+            <path
+              fill="#FBBC05"
+              d="M5.27 14.29a7.2 7.2 0 0 1 0-4.58v-3.1H1.28a11.99 11.99 0 0 0 0 10.78l3.99-3.1z"
+            ></path>
+            <path
+              fill="#EA4335"
+              d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.43-3.43C17.95 1.19 15.23 0 12 0 7.31 0 3.26 2.69 1.28 6.61l3.99 3.1C6.22 6.86 8.87 4.75 12 4.75z"
+            ></path>
+          </svg>
+        </span>
+        <span class="leading-tight">
+          <span class="flex items-center gap-1.5">
+            <span
+              class="font-display text-2xl font-extrabold text-bone"
+              data-counter={String(business.rating)}
+              data-decimals="1">0.0</span
+            >
+            <span class="flex" aria-hidden="true">
+              {
+                stars.map((filled) => (
+                  <svg viewBox="0 0 20 20" class="h-3.5 w-3.5" fill={filled ? '#e8a33d' : 'none'} stroke="#e8a33d" stroke-width="1.4">
+                    <path d="M10 1.6l2.47 5.2 5.53.7-4.07 3.86 1.05 5.55L10 14.3l-4.98 2.61 1.05-5.55L2 7.5l5.53-.7L10 1.6z" />
+                  </svg>
+                ))
+              }
+            </span>
+          </span>
+          <span class="mt-0.5 block font-mono text-[10px] uppercase tracking-[0.18em] text-sand/70">
+            <span data-counter={String(business.reviewCount)} data-decimals="0">0</span> Google reviews
+          </span>
+        </span>
+      </a>
+
+      <div class="h-8 w-px bg-white/10"></div>
+
+      <!-- Live status -->
+      <div data-live-status data-state="open" class="flex items-center gap-3">
+        <span class="relative flex h-2 w-2">
+          <span class="absolute inline-flex h-full w-full animate-breathe rounded-full bg-[#8ef0a8]"></span>
+          <span class="relative inline-flex h-2 w-2 rounded-full bg-[#8ef0a8]"></span>
+        </span>
+        <span
+          data-status-text
+          class="font-mono text-[10px] uppercase tracking-[0.18em] text-bone/80 sm:text-[11px]"
+        >
+          Open now · until 1:00 AM
+        </span>
+      </div>
+
+      <div class="hidden h-8 w-px bg-white/10 sm:block"></div>
+
+      <p class="hidden font-mono text-[10px] uppercase tracking-[0.18em] text-sand/60 sm:block">
+        {hours.display}
+      </p>
+    </div>
+  </div>
+
+  <div
+    class="absolute bottom-7 left-1/2 z-20 hidden -translate-x-1/2 flex-col items-center gap-2 md:flex"
+    aria-hidden="true"
+  >
+    <span class="font-mono text-[9px] uppercase tracking-[0.35em] text-sand/50">Scroll</span>
+    <span class="h-12 w-px bg-gradient-to-b from-amber/70 to-transparent"></span>
+  </div>
+</section>
+
+<script>
+  import * as THREE from 'three';
+
+  const CAVERN = (window as any).CAVERN;
+  const canvas = document.getElementById('hero-canvas') as HTMLCanvasElement | null;
+  const section = canvas?.closest('section') as HTMLElement | null;
+
+  if (canvas && section && CAVERN) {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const renderer = new THREE.WebGLRenderer({
+      canvas,
+      alpha: true,
+      antialias: true,
+      powerPreference: 'high-performance',
+    });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setClearColor(0x000000, 0);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 120);
+    camera.position.set(0, 0, 7.5);
+
+    /* ---------------- Iridescent core object ---------------- */
+    const uniforms = {
+      uTime: { value: 0 },
+      uA: { value: new THREE.Color('#ff9d3c') },
+      uB: { value: new THREE.Color('#6ae6ff') },
+      uC: { value: new THREE.Color('#ff4d6d') },
+    };
+
+    const vert = /* glsl */ `
+      uniform float uTime;
+      varying vec3 vN;
+      varying vec3 vP;
+      varying vec2 vUv;
+      void main(){
+        vUv = uv;
+        vN = normalize(normalMatrix * normal);
+        vec3 pos = position;
+        pos += normal * sin(pos.y * 2.6 + uTime * 1.25) * 0.055;
+        vec4 mv = modelViewMatrix * vec4(pos, 1.0);
+        vP = mv.xyz;
+        gl_Position = projectionMatrix * mv;
+      }
+    `;
+
+    const frag = /* glsl */ `
+      uniform float uTime;
+      uniform vec3 uA;
+      uniform vec3 uB;
+      uniform vec3 uC;
+      varying vec3 vN;
+      varying vec3 vP;
+      varying vec2 vUv;
+      void main(){
+        vec3 V = normalize(-vP);
+        vec3 N = normalize(vN);
+        float fres = pow(1.0 - max(dot(N, V), 0.0), 2.6);
+
+        float t = vUv.x * 2.0 + vUv.y * 1.6 + uTime * 0.11;
+        vec3 film = 0.5 + 0.5 * cos(6.28318 * (t + vec3(0.0, 0.33, 0.67)));
+
+        vec3 col = mix(uA, uB, film.r);
+        col = mix(col, uC, film.g * 0.55);
+        col *= 0.72;
+        col += fres * 1.35 * vec3(1.0, 0.74, 0.38);
+
+        vec3 L = normalize(vec3(0.55, 0.8, 0.6));
+        col += pow(max(dot(N, L), 0.0), 9.0) * 0.7 * vec3(1.0, 0.86, 0.62);
+
+        gl_FragColor = vec4(col, 1.0);
+      }
+    `;
+
+    const coreMat = new THREE.ShaderMaterial({ uniforms, vertexShader: vert, fragmentShader: frag });
+    const knot = new THREE.Mesh(new THREE.TorusKnotGeometry(1.02, 0.3, 220, 36, 2, 3), coreMat);
+
+    const shell = new THREE.Mesh(
+      new THREE.IcosahedronGeometry(2.15, 1),
+      new THREE.MeshBasicMaterial({
+        color: 0xe8a33d,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.14,
+      })
+    );
+
+    const ring = new THREE.Mesh(
+      new THREE.TorusGeometry(2.85, 0.005, 8, 220),
+      new THREE.MeshBasicMaterial({ color: 0xe8a33d, transparent: true, opacity: 0.42 })
+    );
+    ring.rotation.x = Math.PI / 2.4;
+
+    const ring2 = new THREE.Mesh(
+      new THREE.TorusGeometry(3.3, 0.004, 8, 220),
+      new THREE.MeshBasicMaterial({ color: 0x6ae6ff, transparent: true, opacity: 0.22 })
+    );
+    ring2.rotation.x = Math.PI / 1.7;
+    ring2.rotation.y = Math.PI / 3;
+
+    const orbGeo = new THREE.SphereGeometry(0.06, 12, 12);
+    const orbs: THREE.Mesh[] = [];
+    for (let i = 0; i < 7; i++) {
+      const m = new THREE.Mesh(
+        orbGeo,
+        new THREE.MeshBasicMaterial({ color: i % 2 ? 0xffb35c : 0x8ff0ff })
+      );
+      orbs.push(m);
+      scene.add(m);
+    }
+
+    const core = new THREE.Group();
+    core.add(knot, shell, ring, ring2);
+    core.position.set(0, 0.15, 0);
+    scene.add(core);
+
+    /* ---------------- Floating particle field ---------------- */
+    const COUNT = reduce ? 400 : 1300;
+    const base = new Float32Array(COUNT * 3);
+    const parr = new Float32Array(COUNT * 3);
+    const vel = new Float32Array(COUNT * 3);
+
+    for (let i = 0; i < COUNT; i++) {
+      const i3 = i * 3;
+      base[i3] = (Math.random() - 0.5) * 22;
+      base[i3 + 1] = (Math.random() - 0.5) * 14;
+      base[i3 + 2] = (Math.random() - 0.5) * 11 - 1.5;
+      parr[i3] = base[i3];
+      parr[i3 + 1] = base[i3 + 1];
+      parr[i3 + 2] = base[i3 + 2];
+    }
+
+    const pGeo = new THREE.BufferGeometry();
+    pGeo.setAttribute('position', new THREE.BufferAttribute(parr, 3));
+
+    // Soft round sprite generated procedurally
+    function makeSprite() {
+      const c = document.createElement('canvas');
+      c.width = c.height = 64;
+      const ctx = c.getContext('2d')!;
+      const g = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+      g.addColorStop(0, 'rgba(255,225,180,1)');
+      g.addColorStop(0.35, 'rgba(255,180,95,0.55)');
+      g.addColorStop(1, 'rgba(255,150,60,0)');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, 64, 64);
+      const tex = new THREE.CanvasTexture(c);
+      tex.needsUpdate = true;
+      return tex;
+    }
+
+    const pMat = new THREE.PointsMaterial({
+      size: 0.075,
+      map: makeSprite(),
+      color: 0xffc978,
+      transparent: true,
+      opacity: 0.85,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+      sizeAttenuation: true,
+    });
+    const points = new THREE.Points(pGeo, pMat);
+    scene.add(points);
+
+    /* ---------------- Layout / resize ---------------- */
+    let halfH = 1;
+    let halfW = 1;
+
+    function resize() {
+      const w = canvas!.clientWidth || section!.clientWidth || window.innerWidth;
+      const h = canvas!.clientHeight || section!.clientHeight || window.innerHeight;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      halfH = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * camera.position.z;
+      halfW = halfH * camera.aspect;
+    }
+    resize();
+    new ResizeObserver(resize).observe(canvas);
+
+    let visible = true;
+    new IntersectionObserver(([e]) => (visible = e.isIntersecting), { threshold: 0.01 }).observe(
+      section
+    );
+
+    /* ---------------- Frame loop ---------------- */
+    const clock = new THREE.Clock();
+    const lean = { x: 0, y: 0 };
+
+    function frame() {
+      requestAnimationFrame(frame);
+      if (!visible) return;
+
+      const t = clock.getElapsedTime();
+      const heroH = section!.offsetHeight || window.innerHeight;
+      const p = Math.min(1, Math.max(0, CAVERN.scroll / heroH));
+
+      // Spring-damped cursor lean
+      lean.x += (CAVERN.py * 0.34 - lean.x) * 0.06;
+      lean.y += (CAVERN.px * 0.72 - lean.y) * 0.06;
+
+      uniforms.uTime.value = t;
+
+      // Scroll-driven rotation, scale + depth translation
+      core.rotation.x = lean.x + p * 1.15 + t * 0.055;
+      core.rotation.y = lean.y + p * 0.95 + t * 0.13;
+      core.rotation.z = lean.y * 0.12 + p * 0.2;
+      const scale = Math.max(0.36, 1 - p * 0.52) * (1 + Math.sin(t * 0.8) * 0.012);
+      core.scale.setScalar(scale);
+      core.position.z = -p * 7.5;
+      core.position.x = lean.y * 0.55;
+      core.position.y = 0.15 - lean.x * 0.5 + p * 1.6;
+
+      shell.rotation.y -= 0.0018;
+      shell.rotation.x += 0.0009;
+      ring.rotation.z += 0.0016;
+      ring2.rotation.z -= 0.0011;
+
+      orbs.forEach((o, i) => {
+        const a = t * (0.24 + i * 0.035) + i * 1.1;
+        const r = 2.4 + Math.sin(t * 0.5 + i) * 0.35;
+        o.position.set(Math.cos(a) * r, Math.sin(a * 1.3) * 1.5, Math.sin(a) * r * 0.65);
+      });
+
+      // Particle field with cursor repulsion + spring return
+      const pw = { x: CAVERN.px * halfW, y: CAVERN.py * halfH };
+      const R = 2.3;
+      const R2 = R * R;
+
+      for (let i = 0; i < COUNT; i++) {
+        const i3 = i * 3;
+        const x = parr[i3];
+        const y = parr[i3 + 1];
+        const z = parr[i3 + 2];
+
+        const dx = x - pw.x;
+        const dy = y - pw.y;
+        const d2 = dx * dx + dy * dy;
+
+        if (d2 < R2 && d2 > 0.0001) {
+          const d = Math.sqrt(d2);
+          const f = (1 - d / R) * 0.05;
+          vel[i3] += (dx / d) * f;
+          vel[i3 + 1] += (dy / d) * f;
+        }
+
+        vel[i3] += (base[i3] - x) * 0.0055;
+        vel[i3 + 1] += (base[i3 + 1] - y) * 0.0055;
+        vel[i3 + 2] += (base[i3 + 2] - z) * 0.0055;
+
+        vel[i3] *= 0.94;
+        vel[i3 + 1] *= 0.94;
+        vel[i3 + 2] *= 0.94;
+
+        parr[i3] = x + vel[i3];
+        parr[i3 + 1] = y + vel[i3 + 1] + Math.sin(t * 0.5 + base[i3]) * 0.0012;
+        parr[i3 + 2] = z + vel[i3 + 2];
+      }
+      pGeo.attributes.position.needsUpdate = true;
+
+      points.position.y = p * 3.4;
+      points.position.z = p * 2;
+      pMat.opacity = 0.85 * (1 - p * 0.8);
+      pMat.size = 0.075 * (1 + CAVERN.velocity * 0.5);
+
+      // Parallax camera drift
+      camera.position.x = lean.y * 0.6;
+      camera.position.y = -lean.x * 0.6;
+      camera.lookAt(0, 0, 0);
+
+      renderer.render(scene, camera);
+    }
+    frame();
+  }
+</script>

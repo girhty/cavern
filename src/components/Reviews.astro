@@ -1,0 +1,112 @@
+---
+import { business, ratingBreakdown, reviews } from '../data/content';
+---
+
+<section id="reviews" data-surface="dark" class="relative bg-ink py-24 md:py-36">
+  <div class="mx-auto max-w-edge px-5">
+    <div class="grid gap-14 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-4">
+        <p class="eyebrow" data-reveal>Reviews · 005</p>
+        <h2
+          class="mt-6 font-display text-[clamp(2rem,5.6vw,4rem)] font-extrabold leading-[0.98] tracking-[-0.03em] text-bone"
+          data-reveal
+          style="--d:80ms"
+        >
+          Loved by<br />the <span class="font-script italic font-normal text-amber">regulars</span>.
+        </h2>
+
+        <div class="mt-10 flex items-end gap-5" data-reveal style="--d:140ms">
+          <span
+            class="font-display text-[clamp(3.4rem,9vw,5.6rem)] font-extrabold leading-none text-bone"
+            data-counter={String(business.rating)}
+            data-decimals="1">0.0</span
+          >
+          <span class="pb-2">
+            <span class="flex gap-0.5" aria-hidden="true">
+              {
+                [0, 1, 2, 3, 4].map((i) => (
+                  <svg viewBox="0 0 20 20" class="h-4 w-4" fill={i < 4 ? '#e8a33d' : 'none'} stroke="#e8a33d" stroke-width="1.4">
+                    <path d="M10 1.6l2.47 5.2 5.53.7-4.07 3.86 1.05 5.55L10 14.3l-4.98 2.61 1.05-5.55L2 7.5l5.53-.7L10 1.6z" />
+                  </svg>
+                ))
+              }
+            </span>
+            <span class="mt-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] text-sand/70">
+              <span data-counter={String(business.reviewCount)} data-decimals="0">0</span> Google reviews
+            </span>
+          </span>
+        </div>
+
+        <ul class="mt-9 space-y-2.5" data-reveal style="--d:200ms">
+          {
+            ratingBreakdown.map((row) => (
+              <li class="flex items-center gap-3">
+                <span class="w-6 font-mono text-[10px] text-sand/70">{row.stars}★</span>
+                <span class="relative h-1.5 flex-1 overflow-hidden rounded-full bg-white/[0.08]">
+                  <span
+                    class="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-amber to-ember"
+                    style={`width:${row.percent}%`}
+                  />
+                </span>
+                <span class="w-8 text-right font-mono text-[10px] text-sand/60">{row.percent}%</span>
+              </li>
+            ))
+          }
+        </ul>
+
+        <a
+          href={business.mapsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-ghost mt-9 text-bone"
+          data-reveal
+          style="--d:260ms"
+        >
+          Read all reviews on Google
+        </a>
+      </div>
+
+      <div class="grid gap-4 sm:grid-cols-2 lg:col-span-8" data-reveal style="--d:180ms">
+        {
+          reviews.map((r) => (
+            <blockquote
+              class="group flex h-full flex-col justify-between rounded-3xl border border-white/[0.08] bg-white/[0.03] p-6 backdrop-blur-md transition-all duration-500 hover:border-amber/40 hover:bg-white/[0.055]"
+            >
+              <div>
+                <div class="flex items-center gap-0.5" aria-label={`${r.rating} out of 5 stars`}>
+                  {[0, 1, 2, 3, 4].map((i) => (
+                    <svg
+                      viewBox="0 0 20 20"
+                      class="h-3.5 w-3.5"
+                      fill={i < r.rating ? '#e8a33d' : 'none'}
+                      stroke="#e8a33d"
+                      stroke-width="1.4"
+                      aria-hidden="true"
+                    >
+                      <path d="M10 1.6l2.47 5.2 5.53.7-4.07 3.86 1.05 5.55L10 14.3l-4.98 2.61 1.05-5.55L2 7.5l5.53-.7L10 1.6z" />
+                    </svg>
+                  ))}
+                </div>
+                <p class="mt-4 text-[14.5px] leading-relaxed text-bone/80">“{r.text}”</p>
+              </div>
+
+              <footer class="mt-6 flex items-center gap-3 border-t border-white/10 pt-4">
+                <span class="grid h-9 w-9 place-items-center rounded-full bg-amber/15 font-mono text-[10px] font-medium text-amber">
+                  {r.initials}
+                </span>
+                <span class="leading-tight">
+                  <cite class="block font-display text-sm font-semibold not-italic text-bone">
+                    {r.author}
+                  </cite>
+                  <span class="block font-mono text-[10px] uppercase tracking-[0.18em] text-sand/55">
+                    {r.when} · Google
+                  </span>
+                </span>
+              </footer>
+            </blockquote>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

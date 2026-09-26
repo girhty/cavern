@@ -1,0 +1,59 @@
+---
+import ShaderBackground from './ShaderBackground.astro';
+import { business, stats } from '../data/content';
+---
+
+<section
+  data-surface="dark"
+  class="relative isolate overflow-hidden border-y border-white/[0.06] bg-ink py-28 md:py-40"
+>
+  <ShaderBackground />
+
+  <div class="relative z-10 mx-auto max-w-edge px-5">
+    <p class="eyebrow" data-reveal>Manifesto · 001</p>
+
+    <h2
+      class="mt-8 max-w-5xl font-display text-[clamp(2rem,6.4vw,5.4rem)] font-extrabold leading-[0.94] tracking-[-0.03em] text-bone"
+      data-reveal
+      style="--d:100ms"
+    >
+      Rooted in <span class="text-amber">stone</span>.<br />
+      Warmed by <span class="font-script italic font-normal">fire</span>.
+    </h2>
+
+    <div class="mt-14 grid gap-12 lg:grid-cols-12">
+      <div class="lg:col-span-6">
+        <p class="max-w-xl text-balance text-base leading-relaxed text-bone/70 sm:text-lg" data-reveal style="--d:180ms">
+          Cavern was carved from stone, soul and Mesopotamian pride. We didn’t follow trends — we
+          followed our roots. Every arch, every low light, every cup of tea is an invitation to slow
+          down and share a table.
+        </p>
+        <p class="mt-5 max-w-xl text-sm leading-relaxed text-sand/60" data-reveal style="--d:240ms">
+          {business.notion} · {business.category}
+        </p>
+      </div>
+
+      <dl class="grid grid-cols-3 gap-6 lg:col-span-6 lg:gap-10" data-reveal style="--d:300ms">
+        {
+          stats.map((s) => (
+            <div class="border-l border-white/10 pl-4">
+              <dt class="font-mono text-[9px] uppercase tracking-[0.26em] text-sand/60">
+                {s.label}
+              </dt>
+              <dd class="mt-2 font-display text-[clamp(1.6rem,4.4vw,2.6rem)] font-extrabold leading-none text-bone">
+                <span
+                  data-counter={String(s.value)}
+                  data-decimals={String(s.decimals)}
+                  data-compact={s.compact ? 'true' : 'false'}
+                >
+                  0
+                </span>
+                {s.label === 'Instagram family' && <span class="text-amber">+</span>}
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </div>
+</section>

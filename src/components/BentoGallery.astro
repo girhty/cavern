@@ -1,0 +1,121 @@
+---
+import { business, posts } from '../data/content';
+
+const compact = new Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 1 });
+---
+
+<section id="gallery" data-surface="light" class="relative bg-cream py-24 text-ink md:py-36">
+  <div class="mx-auto max-w-edge px-5">
+    <div class="flex flex-wrap items-end justify-between gap-8">
+      <div>
+        <p class="eyebrow-dim" data-reveal>Instagram · 004</p>
+        <h2
+          class="mt-6 font-display text-[clamp(2rem,5.6vw,4.2rem)] font-extrabold leading-[0.98] tracking-[-0.03em]"
+          data-reveal
+          style="--d:80ms"
+        >
+          Straight from<br />the <span class="font-script italic font-normal text-ember">cavern</span>.
+        </h2>
+      </div>
+
+      <a
+        href={business.instagramUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="group flex items-center gap-4 rounded-full border border-ink/12 bg-white/70 px-4 py-3 backdrop-blur-md transition-all duration-300 hover:border-ember/50 hover:shadow-[0_18px_50px_-28px_rgba(0,0,0,0.45)]"
+        data-reveal
+        style="--d:140ms"
+      >
+        <img
+          src={business.profilePic}
+          alt=""
+          width="44"
+          height="44"
+          loading="lazy"
+          decoding="async"
+          referrerpolicy="no-referrer"
+          class="h-11 w-11 rounded-full object-cover ring-1 ring-ink/10"
+        />
+        <span class="leading-tight">
+          <span class="block font-display text-sm font-bold">@{business.instagram}</span>
+          <span class="block font-mono text-[10px] uppercase tracking-[0.2em] text-ink/50">
+            {compact.format(business.followers)} followers
+          </span>
+        </span>
+        <span
+          class="grid h-8 w-8 place-items-center rounded-full bg-ink text-cream transition-transform duration-300 group-hover:translate-x-0.5"
+          aria-hidden="true"
+        >
+          <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M7 17 17 7M17 7H9M17 7v8" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </span>
+      </a>
+    </div>
+
+    <div
+      class="mt-14 grid auto-rows-[minmax(0,1fr)] grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4"
+      data-reveal
+      style="--d:180ms"
+    >
+      {
+        posts.map((post, i) => (
+          <figure
+            data-tilt
+            class:list={[
+              'group relative overflow-hidden rounded-2xl bg-ink/5',
+              'aspect-square',
+              post.span,
+            ]}
+          >
+            <div data-tilt-inner class="absolute inset-0">
+              <img
+                src={post.image_url}
+                alt={post.tag}
+                loading={i < 4 ? 'eager' : 'lazy'}
+                decoding="async"
+                referrerpolicy="no-referrer"
+                class="h-full w-full object-cover"
+              />
+
+              <span class="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100 group-focus-within:opacity-100" />
+
+              <figcaption class="absolute inset-x-0 bottom-0 translate-y-3 p-4 opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100">
+                <div class="rounded-2xl border border-white/15 bg-ink/45 p-3 backdrop-blur-xl">
+                  <div class="flex items-center justify-between gap-3">
+                    <span class="font-mono text-[9px] uppercase tracking-[0.24em] text-amber">
+                      {post.tag}
+                    </span>
+                    <span class="flex items-center gap-3 font-mono text-[10px] text-bone/85">
+                      <span class="flex items-center gap-1">
+                        <svg viewBox="0 0 24 24" class="h-3.5 w-3.5" fill="currentColor" aria-hidden="true">
+                          <path d="M12 21s-7.5-4.6-9.3-9A5.4 5.4 0 0 1 12 6.2a5.4 5.4 0 0 1 9.3 5.8C19.5 16.4 12 21 12 21z" />
+                        </svg>
+                        {compact.format(post.likes)}
+                      </span>
+                      <span class="flex items-center gap-1">
+                        <svg viewBox="0 0 24 24" class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                          <path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.4A8 8 0 1 1 21 12z" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        {compact.format(post.comments)}
+                      </span>
+                    </span>
+                  </div>
+                  <p class="mt-2 line-clamp-3 text-[12px] leading-snug text-bone/80">
+                    {post.caption}
+                  </p>
+                </div>
+              </figcaption>
+            </div>
+          </figure>
+        ))
+      }
+    </div>
+
+    <div class="mt-12 flex justify-center" data-reveal>
+      <a href={business.instagramUrl} target="_blank" rel="noopener noreferrer" class="btn-ghost text-ink">
+        Follow @{business.instagram}
+      </a>
+    </div>
+  </div>
+</section>

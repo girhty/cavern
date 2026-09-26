@@ -1,0 +1,103 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import Manifesto from '../components/Manifesto.astro';
+import Story from '../components/Story.astro';
+import Rituals from '../components/Rituals.astro';
+import BentoGallery from '../components/BentoGallery.astro';
+import Reviews from '../components/Reviews.astro';
+import Visit from '../components/Visit.astro';
+import { business } from '../data/content';
+---
+
+<Layout>
+  <!-- 01 · Spatial hero with interactive WebGL scene -->
+  <Hero />
+
+  <!-- 02 · Thin-film shader manifesto -->
+  <Manifesto />
+
+  <!-- 03 · Brand story + Google Places photography -->
+  <Story />
+
+  <!-- 04 · Weekly rituals & events -->
+  <Rituals />
+
+  <!-- 05 · Instagram bento gallery with tilt physics -->
+  <BentoGallery />
+
+  <!-- 06 · Google rating, reviews & distribution -->
+  <Reviews />
+
+  <!-- 07 · Location, hours, live status & map -->
+  <Visit />
+
+  <!-- Closing marquee band -->
+  <section
+    data-surface="dark"
+    aria-label="Cavern highlights"
+    class="border-y border-white/[0.06] bg-ink py-10"
+  >
+    <div class="relative flex overflow-hidden">
+      <div class="flex animate-marquee whitespace-nowrap will-change-transform">
+        {
+          [0, 1].map(() => (
+            <div class="flex items-center">
+              {[
+                'Breakfast daily',
+                'Dining from 1 PM',
+                'Tea on the house',
+                'Trivia Wednesdays',
+                'Karaoke Fridays',
+                'Cavern in Bloom',
+                'Private gatherings',
+                'West Diamond · Erbil',
+                'Voted the coziest in town',
+              ].map((item) => (
+                <span class="flex items-center">
+                  <span class="px-8 font-display text-[clamp(1rem,2.6vw,1.6rem)] font-extrabold uppercase tracking-tight text-bone/35">
+                    {item}
+                  </span>
+                  <span class="h-1.5 w-1.5 rounded-full bg-amber/70" aria-hidden="true" />
+                </span>
+              ))}
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section data-surface="light" class="bg-cream py-20 text-ink md:py-28">
+    <div class="mx-auto max-w-edge px-5 text-center">
+      <p class="eyebrow-dim" data-reveal>Erbil · Tonight</p>
+      <h2
+        class="mx-auto mt-6 max-w-3xl text-balance font-display text-[clamp(1.8rem,5vw,3.4rem)] font-extrabold leading-[1.02] tracking-[-0.03em]"
+        data-reveal
+        style="--d:80ms"
+      >
+        Come for the candlelight.
+        <span class="font-script italic font-normal text-ember">Leave with a story.</span>
+      </h2>
+      <div class="mt-9 flex flex-wrap justify-center gap-3" data-reveal style="--d:160ms">
+        <a href={`tel:${business.phoneHref}`} class="btn-primary">Call {business.phone}</a>
+        <a
+          href={business.instagramUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-ghost text-ink"
+        >
+          DM @{business.instagram}
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style is:global>
+  @media (prefers-reduced-motion: reduce) {
+    .animate-marquee {
+      animation: none;
+    }
+  }
+</style>

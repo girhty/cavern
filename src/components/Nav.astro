@@ -1,0 +1,90 @@
+---
+import { business } from '../data/content';
+---
+
+<header
+  data-nav
+  data-theme="dark"
+  data-scrolled="false"
+  class="group fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-500
+    border-b border-[var(--nav-border)] bg-[var(--nav-bg)] backdrop-blur-xl"
+  style="-webkit-backdrop-filter:blur(20px)"
+>
+  <div class="mx-auto flex max-w-edge items-center justify-between gap-4 px-5 py-3 md:py-3.5">
+    <a href="#top" class="group/logo flex items-center gap-3 text-[var(--nav-fg)] transition-colors duration-500">
+      <span class="relative grid h-10 w-10 place-items-center">
+        <span
+          class="absolute inset-0 rounded-full bg-amber/40 blur-md opacity-0 transition-opacity duration-500 group-hover/logo:opacity-100"
+        ></span>
+        <img
+          src={business.profilePic}
+          alt="Cavern brand mark"
+          width="40"
+          height="40"
+          loading="eager"
+          decoding="async"
+          referrerpolicy="no-referrer"
+          class="relative h-10 w-10 rounded-full object-cover ring-1 ring-[var(--nav-border)]"
+        />
+      </span>
+      <span class="hidden leading-none sm:block">
+        <span class="block font-display text-[15px] font-extrabold tracking-tight">Cavern</span>
+        <span class="block font-mono text-[9px] uppercase tracking-[0.28em] opacity-60"
+          >کاڤێرن · Erbil</span
+        >
+      </span>
+    </a>
+
+    <nav aria-label="Primary" class="hidden items-center gap-8 md:flex">
+      {
+        [
+          ['Story', '#story'],
+          ['Rituals', '#rituals'],
+          ['Gallery', '#gallery'],
+          ['Reviews', '#reviews'],
+          ['Visit', '#visit'],
+        ].map(([label, href]) => (
+          <a
+            href={href}
+            class="relative font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--nav-fg)] opacity-75 transition-opacity duration-300 hover:opacity-100"
+          >
+            {label}
+            <span class="absolute -bottom-1 left-0 h-px w-0 bg-amber transition-all duration-500 hover:w-full" />
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="flex items-center gap-2 sm:gap-3">
+      <div
+        data-live-status
+        data-state="open"
+        class="hidden items-center gap-2 rounded-full border border-[var(--nav-border)] px-3 py-1.5 text-[var(--nav-fg)] transition-colors duration-500 lg:flex"
+      >
+        <span class="relative flex h-1.5 w-1.5">
+          <span class="absolute inline-flex h-full w-full animate-breathe rounded-full bg-[var(--nav-dot)]"></span>
+          <span class="relative inline-flex h-1.5 w-1.5 rounded-full bg-[var(--nav-dot)]"></span>
+        </span>
+        <span data-status-text class="font-mono text-[10px] uppercase tracking-[0.18em]"
+          >Open now · until 1:00 AM</span
+        >
+      </div>
+
+      <a
+        href="#visit"
+        class="inline-flex items-center gap-2 rounded-full bg-amber px-4 py-2 font-mono text-[10px] uppercase tracking-[0.2em] text-ink transition-all duration-300 hover:bg-[var(--nav-fg)] active:scale-95 sm:px-5"
+      >
+        Reserve
+      </a>
+    </div>
+  </div>
+</header>
+
+<style is:global>
+  [data-nav][data-scrolled='true'] {
+    box-shadow: 0 18px 50px -30px rgba(0, 0, 0, 0.85);
+  }
+  [data-live-status][data-state='closed'] {
+    --nav-dot: #ff6b57;
+  }
+</style>

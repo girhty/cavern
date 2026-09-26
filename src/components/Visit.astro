@@ -1,0 +1,115 @@
+---
+import { business, hours } from '../data/content';
+
+const mapEmbed = `https://www.google.com/maps?q=${encodeURIComponent(
+  'Cavern Erbil Empire 100M Street'
+)}&output=embed`;
+---
+
+<section id="visit" data-surface="light" class="relative bg-bone py-24 text-ink md:py-36">
+  <div class="mx-auto max-w-edge px-5">
+    <div class="grid gap-14 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-5">
+        <p class="eyebrow-dim" data-reveal>Visit · 006</p>
+        <h2
+          class="mt-6 font-display text-[clamp(2rem,5.6vw,4rem)] font-extrabold leading-[0.98] tracking-[-0.03em]"
+          data-reveal
+          style="--d:80ms"
+        >
+          Find your<br />corner <span class="font-script italic font-normal text-ember">tonight</span>.
+        </h2>
+
+        <dl class="mt-10 space-y-6" data-reveal style="--d:140ms">
+          <div class="border-t border-ink/12 pt-4">
+            <dt class="font-mono text-[9px] uppercase tracking-[0.28em] text-ink/45">Address</dt>
+            <dd class="mt-2 text-[15px] leading-relaxed font-medium text-ink/85">
+              {business.addressLines.map((line) => <span class="block">{line}</span>)}
+            </dd>
+          </div>
+
+          <div class="border-t border-ink/12 pt-4">
+            <dt class="font-mono text-[9px] uppercase tracking-[0.28em] text-ink/45">Reservations</dt>
+            <dd class="mt-2">
+              <a
+                href={`tel:${business.phoneHref}`}
+                class="font-display text-xl font-bold tracking-tight underline decoration-ember decoration-2 underline-offset-4 transition-colors hover:text-ember"
+              >
+                {business.phone}
+              </a>
+            </dd>
+          </div>
+
+          <div class="border-t border-ink/12 pt-4">
+            <dt class="font-mono text-[9px] uppercase tracking-[0.28em] text-ink/45">Hours</dt>
+            <dd class="mt-3 space-y-1.5">
+              <div class="flex items-center justify-between gap-6 text-sm">
+                <span class="font-medium text-ink/85">{hours.label} · Kitchen &amp; bar</span>
+                <span class="font-mono text-[11px] text-ink/60">{hours.display}</span>
+              </div>
+              <div class="flex items-center justify-between gap-6 text-sm">
+                <span class="font-medium text-ink/85">Breakfast service</span>
+                <span class="font-mono text-[11px] text-ink/60">From 9:00 AM</span>
+              </div>
+              <div class="flex items-center justify-between gap-6 text-sm">
+                <span class="font-medium text-ink/85">Dining service</span>
+                <span class="font-mono text-[11px] text-ink/60">From 1:00 PM</span>
+              </div>
+            </dd>
+          </div>
+        </dl>
+
+        <div class="mt-10 flex flex-wrap gap-3" data-reveal style="--d:200ms">
+          <a href={`tel:${business.phoneHref}`} class="btn-primary">Call to reserve</a>
+          <a
+            href={business.mapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-ghost text-ink"
+          >
+            Get directions
+          </a>
+        </div>
+
+        <div
+          data-live-status
+          data-state="open"
+          class="mt-8 inline-flex items-center gap-3 rounded-full border border-ink/12 bg-white/60 px-4 py-2.5 backdrop-blur-md"
+          data-reveal
+          style="--d:240ms"
+        >
+          <span class="relative flex h-2 w-2">
+            <span class="absolute inline-flex h-full w-full animate-breathe rounded-full bg-[#1f9d55]"></span>
+            <span class="relative inline-flex h-2 w-2 rounded-full bg-[#1f9d55]"></span>
+          </span>
+          <span
+            data-status-text
+            class="font-mono text-[10px] uppercase tracking-[0.18em] text-ink/70"
+          >
+            Open now · until 1:00 AM
+          </span>
+        </div>
+      </div>
+
+      <div class="lg:col-span-7" data-reveal style="--d:180ms">
+        <div class="overflow-hidden rounded-3xl border border-ink/12 bg-ink/5 shadow-[0_40px_90px_-60px_rgba(0,0,0,0.6)]">
+          <iframe
+            title="Map showing Cavern on 100M Street, Erbil"
+            src={mapEmbed}
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            class="h-[320px] w-full grayscale-[0.35] contrast-[1.05] transition-[filter] duration-700 hover:grayscale-0 sm:h-[420px] lg:h-[520px]"
+          ></iframe>
+        </div>
+
+        <div class="mt-4 flex flex-wrap items-center justify-between gap-4">
+          <p class="font-mono text-[10px] uppercase tracking-[0.24em] text-ink/45">
+            West Diamond A · Empire · Erbil
+          </p>
+          <p class="font-mono text-[10px] uppercase tracking-[0.24em] text-ink/45">
+            {business.geo.lat.toFixed(4)}° N · {business.geo.lng.toFixed(4)}° E
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,21 @@
+{
+  "name": "cavern-erbil",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cavern — کاڤێرن · An immersive 3D static experience for Erbil's coziest café.",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/tailwind": "^5.1.4",
+    "astro": "^4.16.18",
+    "lenis": "^1.1.20",
+    "tailwindcss": "^3.4.17",
+    "three": "^0.170.0"
+  }
+}

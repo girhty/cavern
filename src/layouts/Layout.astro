@@ -1,0 +1,326 @@
+---
+import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { business } from '../data/content';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Cavern — کاڤێرن · The Coziest Place in Town | Erbil',
+  description =
+    'Cavern — کاڤێرن is Erbil’s coziest café and late-night lounge on 100M Street, Empire. Rated 4.5 ★ from 164 Google reviews. Breakfast daily, dining from 1 PM, live nights and trivia at Cavern Diamond.',
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://cavern-erbil.example.com');
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#070707" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical.href} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Cavern — کاڤێرن" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical.href} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap"
+    />
+
+    <!-- Shared spatial state: created immediately so every module script can rely on it. -->
+    <script is:inline>
+      window.CAVERN = {
+        px: 0,
+        py: 0,
+        tx: 0,
+        ty: 0,
+        scroll: 0,
+        progress: 0,
+        velocity: 0,
+        time: 0,
+        cbs: new Set(),
+        on(fn) {
+          this.cbs.add(fn);
+          return () => this.cbs.delete(fn);
+        },
+      };
+      window.addEventListener(
+        'pointermove',
+        (e) => {
+          const c = window.CAVERN;
+          c.tx = (e.clientX / window.innerWidth) * 2 - 1;
+          c.ty = -((e.clientY / window.innerHeight) * 2 - 1);
+        },
+        { passive: true }
+      );
+      window.addEventListener(
+        'deviceorientation',
+        (e) => {
+          if (e.gamma == null || e.beta == null) return;
+          const c = window.CAVERN;
+          c.tx = Math.max(-1, Math.min(1, e.gamma / 35));
+          c.ty = Math.max(-1, Math.min(1, -e.beta / 60));
+        },
+        { passive: true }
+      );
+    </script>
+
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'CafeOrCoffeeShop',
+        name: 'Cavern - کاڤێرن',
+        image: business.profilePic,
+        telephone: business.phone,
+        address: {
+          '@type': 'PostalAddress',
+          streetAddress: 'West Diamond A, Empire, 100M Street',
+          addressLocality: 'Erbil',
+          addressRegion: 'Erbil Governorate',
+          postalCode: '44001',
+          addressCountry: 'IQ',
+        },
+        geo: { '@type': 'GeoCoordinates', latitude: business.geo.lat, longitude: business.geo.lng },
+        aggregateRating: {
+          '@type': 'AggregateRating',
+          ratingValue: business.rating,
+          reviewCount: business.reviewCount,
+          bestRating: 5,
+        },
+        openingHoursSpecification: [
+          {
+            '@type': 'OpeningHoursSpecification',
+            dayOfWeek: [
+              'Monday',
+              'Tuesday',
+              'Wednesday',
+              'Thursday',
+              'Friday',
+              'Saturday',
+              'Sunday',
+            ],
+            opens: '09:00',
+            closes: '01:00',
+          },
+        ],
+        sameAs: [business.instagramUrl],
+      })}
+    />
+  </head>
+
+  <body class="bg-ink font-display text-bone antialiased selection:bg-amber selection:text-ink">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-amber focus:px-5 focus:py-2 focus:font-mono focus:text-xs focus:uppercase focus:tracking-widest focus:text-ink"
+    >
+      Skip to content
+    </a>
+
+    <Nav />
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <Footer />
+
+    <script>
+      import Lenis from 'lenis';
+
+      const CAVERN = (window as any).CAVERN;
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      /* ---------------------------------------------------------------
+         Central frame loop: smooth scroll + pointer spring + broadcast
+      ---------------------------------------------------------------- */
+      const lenis = new Lenis({
+        duration: 1.15,
+        lerp: 0.085,
+        wheelMultiplier: 1,
+        touchMultiplier: 1.4,
+        smoothWheel: !reduce,
+      });
+
+      (window as any).CAVERN_LENIS = lenis;
+
+      document.querySelectorAll('a[href^="#"]').forEach((a) => {
+        a.addEventListener('click', (e) => {
+          const id = (a as HTMLAnchorElement).getAttribute('href');
+          if (!id || id === '#') return;
+          const el = document.querySelector(id);
+          if (!el) return;
+          e.preventDefault();
+          lenis.scrollTo(el as HTMLElement, { offset: -72, duration: 1.4 });
+        });
+      });
+
+      lenis.on('scroll', (e: any) => {
+        CAVERN.scroll = e.scroll;
+        CAVERN.progress = e.progress ?? 0;
+        CAVERN.velocity = Math.min(1, Math.abs(e.velocity ?? 0) / 35);
+      });
+
+      function frame(time: number) {
+        lenis.raf(time);
+        CAVERN.time = time * 0.001;
+        CAVERN.px += (CAVERN.tx - CAVERN.px) * 0.075;
+        CAVERN.py += (CAVERN.ty - CAVERN.py) * 0.075;
+        CAVERN.velocity *= 0.94;
+        CAVERN.cbs.forEach((cb: Function) => cb(CAVERN));
+        requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+
+      /* ---------------------------------------------------------------
+         Navigation that recolors itself based on the surface beneath
+      ---------------------------------------------------------------- */
+      const nav = document.querySelector('[data-nav]') as HTMLElement | null;
+      const surfaces = Array.from(document.querySelectorAll<HTMLElement>('[data-surface]'));
+
+      function updateNav() {
+        if (!nav) return;
+        const probe = 46;
+        let theme = 'dark';
+        for (const s of surfaces) {
+          const r = s.getBoundingClientRect();
+          if (r.top <= probe && r.bottom > probe) theme = s.dataset.surface || 'dark';
+        }
+        if (nav.dataset.theme !== theme) nav.dataset.theme = theme;
+        nav.dataset.scrolled = window.scrollY > 24 ? 'true' : 'false';
+      }
+
+      /* ---------------------------------------------------------------
+         Staggered scroll reveals
+      ---------------------------------------------------------------- */
+      const reveal = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]'));
+      const ro = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              ro.unobserve(entry.target);
+            }
+          });
+        },
+        { rootMargin: '0px 0px -12% 0px', threshold: 0.12 }
+      );
+      reveal.forEach((el) => ro.observe(el));
+
+      /* ---------------------------------------------------------------
+         Digit-rolling counters
+      ---------------------------------------------------------------- */
+      const counters = Array.from(document.querySelectorAll<HTMLElement>('[data-counter]'));
+      const co = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            const el = entry.target as HTMLElement;
+            co.unobserve(el);
+            const target = parseFloat(el.dataset.counter || '0');
+            const decimals = parseInt(el.dataset.decimals || '0', 10);
+            const compact = el.dataset.compact === 'true';
+            const start = performance.now();
+            const dur = reduce ? 0 : 1500;
+            const tick = (now: number) => {
+              const p = dur === 0 ? 1 : Math.min(1, (now - start) / dur);
+              const eased = 1 - Math.pow(1 - p, 3);
+              const v = target * eased;
+              el.textContent = compact
+                ? new Intl.NumberFormat('en', {
+                    notation: 'compact',
+                    maximumFractionDigits: 1,
+                  }).format(v)
+                : v.toFixed(decimals);
+              if (p < 1) requestAnimationFrame(tick);
+            };
+            requestAnimationFrame(tick);
+          });
+        },
+        { threshold: 0.5 }
+      );
+      counters.forEach((el) => co.observe(el));
+
+      /* ---------------------------------------------------------------
+         Live "Open now / Closed" status (Asia/Baghdad local time)
+      ---------------------------------------------------------------- */
+      function baghdadNow() {
+        try {
+          return new Date(
+            new Date().toLocaleString('en-US', { timeZone: 'Asia/Baghdad' })
+          );
+        } catch {
+          return new Date();
+        }
+      }
+
+      function updateStatus() {
+        const now = baghdadNow();
+        const h = now.getHours() + now.getMinutes() / 60;
+        const isOpen = h >= 9 || h < 1;
+        document.querySelectorAll<HTMLElement>('[data-live-status]').forEach((el) => {
+          el.dataset.state = isOpen ? 'open' : 'closed';
+          const textEl = el.querySelector('[data-status-text]');
+          const label = isOpen ? 'Open now · until 1:00 AM' : 'Closed · opens 9:00 AM';
+          if (textEl) textEl.textContent = label;
+          el.setAttribute('aria-label', `Cavern is currently ${isOpen ? 'open' : 'closed'}`);
+        });
+      }
+      updateStatus();
+      setInterval(updateStatus, 60000);
+
+      /* ---------------------------------------------------------------
+         Per-frame UI duties (nav + surface sync)
+      ---------------------------------------------------------------- */
+      let lastScroll = -1;
+      CAVERN.on(() => {
+        if (Math.abs(CAVERN.scroll - lastScroll) > 0.5) {
+          lastScroll = CAVERN.scroll;
+          updateNav();
+        }
+      });
+      updateNav();
+      window.addEventListener('resize', updateNav, { passive: true });
+
+      /* ---------------------------------------------------------------
+         Interactive card tilt physics (bento grid + event cards)
+      ---------------------------------------------------------------- */
+      const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+      if (fine && !reduce) {
+        document.querySelectorAll<HTMLElement>('[data-tilt]').forEach((card) => {
+          const inner = card.querySelector<HTMLElement>('[data-tilt-inner]') || card;
+          card.addEventListener('pointermove', (e) => {
+            const r = card.getBoundingClientRect();
+            const px = (e.clientX - r.left) / r.width - 0.5;
+            const py = (e.clientY - r.top) / r.height - 0.5;
+            inner.style.transform = `perspective(1000px) rotateX(${(-py * 9).toFixed(2)}deg) rotateY(${(
+              px * 11
+            ).toFixed(2)}deg) scale(1.028)`;
+          });
+          card.addEventListener('pointerleave', () => {
+            inner.style.transform = '';
+          });
+        });
+      }
+    </script>
+  </body>
+</html>
